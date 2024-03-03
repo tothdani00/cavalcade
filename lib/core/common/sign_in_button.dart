@@ -16,7 +16,7 @@ class SignInButton extends StatelessWidget {
           Constants.googlePath, 
           width: 35,
         ),
-        label: const Text('Google-al való bejelentkezés', 
+        label: const Text('Bejelentkezés Google fiókkal', 
         style: TextStyle(fontSize: 15),
         ),
         style: ElevatedButton.styleFrom(

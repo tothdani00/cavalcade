@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Cavalcade',
-      theme: Pallete.darkModeAppTheme,
+      theme: Pallete.lightModeAppTheme,
       home: const Login(),
     );
   }

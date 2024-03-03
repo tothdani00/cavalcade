@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "57032811526",
+    "project_id": "cavalcade-2c924",
+    "storage_bucket": "cavalcade-2c924.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:57032811526:android:232a265cf70d3069258f87",
+        "android_client_info": {
+          "package_name": "com.example.cavalcade"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAf8LO5AKF9SvAHNbCX8VMf5KMpXncnibk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
