@@ -12,7 +12,20 @@
           "package_name": "com.example.cavalcade"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "57032811526-3b2v7sg0cupq4fe9kfbvgaelnm385ua5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cavalcade",
+            "certificate_hash": "57ee3d67ef51f62ed6c40ef18a2c83e8e52b2ee7"
+          }
+        },
+        {
+          "client_id": "57032811526-fpdgic7dvfn34a73vj4jhfuaim5dank3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAf8LO5AKF9SvAHNbCX8VMf5KMpXncnibk"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "57032811526-fpdgic7dvfn34a73vj4jhfuaim5dank3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "57032811526-9lk9qg6n9bfln4rc6e0rkdtts1m4lvt0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cavalcade"
+              }
+            }
+          ]
         }
       }
     }

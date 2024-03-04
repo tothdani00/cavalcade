@@ -3,7 +3,7 @@ import "package:cavalcade/core/constants/constants.dart";
 import "package:flutter/material.dart";
 
 class Login extends StatelessWidget {
-  const Login({Key? key}) : super(key: key);
+  const Login({super.key});
 
  @override
   Widget build(BuildContext context) {
@@ -31,7 +31,7 @@ class Login extends StatelessWidget {
       body: Center(
         child: Column(
           children: [
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             const Text(
               'Bejelentkezés', 
               style: TextStyle(
@@ -46,7 +46,7 @@ class Login extends StatelessWidget {
                 height: 200,
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
             const SignInButton(),
           ],
         ),
