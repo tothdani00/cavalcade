@@ -41,6 +41,7 @@ dependencies:
   firebase_auth: ^4.16.0
   google_sign_in: ^6.2.1
   flutter_riverpod: ^2.4.10
+  fpdart: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,8 @@ flutter:
     - assets/images/google.png
     - assets/images/login_background.png
     - assets/images/logo.png
+    - assets/images/default_banner.png
+    - assets/images/default_profile_picture.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
