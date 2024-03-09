@@ -1,12 +1,16 @@
+import "package:cavalcade/core/common/loader.dart";
 import "package:cavalcade/core/common/sign_in_button.dart";
 import "package:cavalcade/core/constants/constants.dart";
+import "package:cavalcade/features/auth/controller/auth_controller.dart";
 import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
 
-class Login extends StatelessWidget {
+class Login extends ConsumerWidget {
   const Login({super.key});
 
  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isLoading = ref.watch(authControllerProvider);
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -28,7 +32,9 @@ class Login extends StatelessWidget {
           )
         ],
       ),
-      body: Center(
+      body: isLoading 
+      ? const Loader() 
+      : Center(
         child: Column(
           children: [
             const SizedBox(height: 20),
