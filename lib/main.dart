@@ -1,7 +1,6 @@
 import 'package:cavalcade/core/common/error_text.dart';
 import 'package:cavalcade/core/common/loader.dart';
 import 'package:cavalcade/features/auth/controller/auth_controller.dart';
-import 'package:cavalcade/features/auth/screens/login.dart';
 import 'package:cavalcade/models/user_model.dart';
 import 'package:cavalcade/router.dart';
 import 'package:cavalcade/theme/pallete.dart';
@@ -35,12 +34,10 @@ class _MyAppState extends ConsumerState<MyApp> {
 
   UserModel? userModel;
 
-  void getData(WidgetRef ref, User data) async{
+  void getData(WidgetRef ref, User data) async {
     userModel = await ref.watch(authControllerProvider.notifier).getUserData(data.uid).first;
     ref.read(userProvider.notifier).update((state) => userModel);
-    setState(() {
-      
-    });
+    setState(() {});
   }
 
   @override

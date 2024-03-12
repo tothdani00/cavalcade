@@ -7,6 +7,18 @@ import 'package:flutter/material.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+
+final userCommunitiesProvider = StreamProvider((ref) {
+  final communityController = ref.watch(communityControllerProvider.notifier);
+  return communityController.getUserCommunities();
+});
+
+final getCommunityByNameCommunitiesProvider = StreamProvider.family((ref, String name) {
+  return ref.watch(communityControllerProvider.notifier).getCommunityByName(name);
+});
+
+
+
 final communityControllerProvider = StateNotifierProvider<CommunityController, bool>((ref) {
   final communityRepo = ref.watch(communityRepoProvider);
   return CommunityController(
@@ -32,8 +44,8 @@ class CommunityController extends StateNotifier<bool>{
     Community community = Community(
       id: name, 
       name: name, 
-      banner: Constants.bannerPath, 
-      profilePic: Constants.profilePicturePath, 
+      banner: Constants.communityDefaultBannerPath, 
+      profilePic: Constants.communityDefaultPicturePath, 
       members: [uid], 
       admins: [uid],
       );
@@ -44,6 +56,14 @@ class CommunityController extends StateNotifier<bool>{
         showSnackBar(context, 'Közösség létrehozva!');
         Routemaster.of(context).pop();
       });
+  }
+  Stream<List<Community>> getUserCommunities(){
+    final uid = _ref.read(userProvider)!.uid;
+    return _communityRepository.getUserCommunities(uid);
+  }
+
+  Stream<Community> getCommunityByName(String name){
+    return _communityRepository.getCommunityByName(name);
   }
 }
 
