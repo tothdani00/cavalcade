@@ -30,7 +30,7 @@ class CommunityScreen extends ConsumerWidget {
               snap: true,
               flexibleSpace: Stack(
                 children:[
-                  Positioned.fill(child: Image.asset(community.banner, fit: BoxFit.cover,),
+                  Positioned.fill(child: Image.network(community.banner, fit: BoxFit.cover,),
                   ),
                 ],
               ),
@@ -42,7 +42,7 @@ class CommunityScreen extends ConsumerWidget {
                   Align(
                     alignment: Alignment.topLeft,
                     child: CircleAvatar(
-                      backgroundImage: AssetImage(community.profilePic),
+                      backgroundImage: NetworkImage(community.profilePic),
                       radius: 35,
                     ),
                   ),

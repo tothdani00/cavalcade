@@ -35,7 +35,7 @@ class CommunityDrawer extends ConsumerWidget {
                   final community = communities[index];
                   return ListTile(
                     leading: CircleAvatar(
-                      backgroundImage: AssetImage(community.profilePic),
+                      backgroundImage: NetworkImage(community.profilePic),
                     ),
                     title: Text(community.name),
                     onTap: () {

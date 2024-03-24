@@ -4,6 +4,7 @@ import 'package:cavalcade/core/common/loader.dart';
 import 'package:cavalcade/core/constants/constants.dart';
 import 'package:cavalcade/core/utils.dart';
 import 'package:cavalcade/features/auth/controller/community_controller.dart';
+import 'package:cavalcade/models/community_model.dart';
 import 'package:cavalcade/theme/pallete.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
@@ -41,22 +42,35 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
     }
   }
 
+  void save(Community community) {
+    ref.read(communityControllerProvider.notifier).
+    editCommunity(
+      profileFile: profileFile, 
+      bannerFile: bannerFile, 
+      context: context, 
+      community: community,
+      );
+  }
+
 
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = ref.watch(communityControllerProvider);
     return ref.watch(getCommunityByNameCommunitiesProvider(widget.name)).when(data: (community) => Scaffold(
       backgroundColor: Pallete.darkModeAppTheme.backgroundColor,
       appBar: AppBar(
         title: const Text('Közösség szerkesztése'),
         centerTitle: false,
         actions: [
-          TextButton(onPressed: () {}, 
+          TextButton(onPressed: () => save(community), 
           child: const Text('Mentés')
           ),
         ],
       ),
-      body: Padding(
+      body: isLoading 
+      ? const Loader() 
+      : Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
@@ -79,10 +93,11 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
                         borderRadius: BorderRadius.circular(10),
                         ),
                         child: bannerFile!= null ? Image.file(bannerFile!) : 
-                        community.banner.isEmpty || community.banner == Constants.communityDefaultBannerPath ?
-                        const Center(
-                          child: Icon(Icons.camera_alt_outlined, size: 40,),
-                        ): Image.asset(community.banner),
+                        community.banner.isEmpty || community.banner == Constants.communityDefaultBannerPath
+                          ? const Center(
+                            child: Icon(Icons.camera_alt_outlined, size: 40,),
+                            )
+                          : Image.network(community.banner),
                       ),
                     ),
                   ),
@@ -91,15 +106,15 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
                     left: 20,
                     child: GestureDetector(
                       onTap: selectProfileImage,
-                      child: profileFile!=null 
-                      ? CircleAvatar(
-                        backgroundImage: FileImage(profileFile!),
-                        radius: 30,
-                        )
-                      : CircleAvatar(
-                        backgroundImage: AssetImage(Constants.communityDefaultPicturePath),
-                        radius: 30,
-                        ),
+                      child: profileFile != null 
+                        ? CircleAvatar(
+                          backgroundImage: FileImage(profileFile!),
+                          radius: 30,
+                          )
+                        : CircleAvatar(
+                          backgroundImage: NetworkImage(community.profilePic),
+                          radius: 30,
+                      ),
                     ),
                   )
                 ],
