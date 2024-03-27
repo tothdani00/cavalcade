@@ -3,6 +3,7 @@ import 'package:cavalcade/core/common/error_text.dart';
 import 'package:cavalcade/core/common/loader.dart';
 import 'package:cavalcade/features/auth/controller/auth_controller.dart';
 import 'package:cavalcade/features/auth/controller/community_controller.dart';
+import 'package:cavalcade/models/community_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
@@ -14,6 +15,10 @@ class CommunityScreen extends ConsumerWidget {
 
   void navigateToAdminTools(BuildContext context){
     Routemaster.of(context).push('/admin-tools/$name');
+  }
+
+  void joinCommunity(WidgetRef ref, Community community, BuildContext context) {
+    ref.read(communityControllerProvider.notifier).joinCommunity(community, context);
   }
 
   @override
@@ -67,7 +72,7 @@ class CommunityScreen extends ConsumerWidget {
                           child: const Text('Admin beállítások'),
                         )
                       : OutlinedButton(
-                        onPressed: () {}, 
+                        onPressed: () => joinCommunity(ref, community, context), 
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20),

@@ -1,5 +1,7 @@
 import 'package:cavalcade/features/auth/controller/auth_controller.dart';
+import 'package:cavalcade/features/auth/home/delegates/search_community.dart';
 import 'package:cavalcade/features/auth/home/drawers/community_drawer.dart';
+import 'package:cavalcade/features/auth/home/drawers/profile_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,6 +10,10 @@ class HomeScreen extends ConsumerWidget {
 
   void displayDrawer(BuildContext context){
     Scaffold.of(context).openDrawer();
+  }
+
+  void displayEndDrawer(BuildContext context){
+    Scaffold.of(context).openEndDrawer();
   }
 
   @override
@@ -28,19 +34,26 @@ class HomeScreen extends ConsumerWidget {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              showSearch(context: context, delegate: SearchCommunity(ref));
+            },
             icon: const Icon(Icons.search),
           ),
-          IconButton(
-            icon: CircleAvatar(
-              backgroundImage: NetworkImage(user.profilePicture),
-              radius: 18,
-            ),
-            onPressed: () {},
+          Builder(
+            builder: (context) {
+              return IconButton(
+                icon: CircleAvatar(
+                  backgroundImage: NetworkImage(user.profilePicture),
+                  radius: 17,
+                ),
+                onPressed: () => displayEndDrawer(context),
+              );
+            }
           ),
         ],
       ),
       drawer: const CommunityDrawer(),
+      endDrawer: const ProfileDrawer(),
     );
   }
 }
