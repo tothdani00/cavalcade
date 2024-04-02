@@ -53,7 +53,7 @@ class AuthRepo {
           name: userCredential.user!.displayName ?? 'Nincs megadva név', 
           email: userCredential.user!.email ?? 'Nincs megadva email', 
           profilePicture: userCredential.user!.photoURL ?? Constants.profilePicturePath, 
-          banner: Constants.bannerPath, 
+          banner: Constants.bannerPath,
           uid: userCredential.user!.uid, 
           isAuthenticated: true, 
           points: 0, 

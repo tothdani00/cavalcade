@@ -13,6 +13,10 @@ class AdminToolsScreen extends StatelessWidget {
     Routemaster.of(context).push('/edit-comunity/$name');
   }
 
+  void navigateToAddAdmins(BuildContext context){
+    Routemaster.of(context).push('/add-admin/$name');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +28,7 @@ class AdminToolsScreen extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.add_moderator_sharp),
             title: const Text('Admin hozzáadása'),
-            onTap: () {},
+            onTap: () => navigateToAddAdmins(context),
           ),
           ListTile(
             leading: const Icon(Icons.edit),
