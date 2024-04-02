@@ -16,6 +16,9 @@ class ProfileDrawer extends ConsumerWidget {
     Routemaster.of(context).push('/user/$uid');
   }
 
+  void toggleTheme(WidgetRef ref){
+    ref.read(themeNotifierProvider.notifier).toggleTheme();
+  }
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider);
@@ -50,10 +53,17 @@ class ProfileDrawer extends ConsumerWidget {
                 ),
               onTap: () => logOut(ref),
             ),
-            Switch.adaptive(
-              value: true, 
-              onChanged: (val) {},
+            ListTile(
+              title: const Text('Alkalmazás téma'),
+              subtitle: const Text('Világos/sötét mód'),
+              leading: Icon(
+                ref.watch(themeNotifierProvider.notifier).mode == ThemeMode.dark ? Icons.dark_mode : Icons.light_mode,
+                ),
+              trailing: Switch.adaptive(
+                value: ref.watch(themeNotifierProvider.notifier).mode == ThemeMode.dark, 
+                onChanged: (val) => toggleTheme(ref),
               ),
+            ),
           ],
         ),
       ),

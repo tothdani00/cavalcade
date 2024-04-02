@@ -2,7 +2,6 @@ import 'package:cavalcade/core/constants/firebase_constants.dart';
 import 'package:cavalcade/core/failure.dart';
 import 'package:cavalcade/core/providers/firebase_providers.dart';
 import 'package:cavalcade/core/type_defs.dart';
-import 'package:cavalcade/models/community_model.dart';
 import 'package:cavalcade/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

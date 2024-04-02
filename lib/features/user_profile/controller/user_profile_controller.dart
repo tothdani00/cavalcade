@@ -1,10 +1,8 @@
 import 'dart:io';
-
 import 'package:cavalcade/core/providers/storage_repo_provider.dart';
 import 'package:cavalcade/core/utils.dart';
 import 'package:cavalcade/features/auth/controller/auth_controller.dart';
 import 'package:cavalcade/features/user_profile/repos/user_profile_repo.dart';
-import 'package:cavalcade/models/community_model.dart';
 import 'package:cavalcade/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

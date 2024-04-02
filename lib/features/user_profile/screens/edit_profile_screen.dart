@@ -5,9 +5,7 @@ import "package:cavalcade/core/common/loader.dart";
 import "package:cavalcade/core/constants/constants.dart";
 import "package:cavalcade/core/utils.dart";
 import "package:cavalcade/features/auth/controller/auth_controller.dart";
-import "package:cavalcade/features/auth/controller/community_controller.dart";
 import "package:cavalcade/features/user_profile/controller/user_profile_controller.dart";
-import "package:cavalcade/models/community_model.dart";
 import "package:cavalcade/theme/pallete.dart";
 import "package:dotted_border/dotted_border.dart";
 import "package:flutter/material.dart";
@@ -64,8 +62,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final isLoading = ref.watch(userProfileControllerProvider);
+    final currentTheme = ref.watch(themeNotifierProvider);
     return ref.watch(getUserDataProvider(widget.uid)).when(data: (user) => Scaffold(
-      backgroundColor: Pallete.darkModeAppTheme.backgroundColor,
+      backgroundColor: currentTheme.backgroundColor,
       appBar: AppBar(
         title: const Text('Profil szerkesztése'),
         centerTitle: false,
@@ -91,7 +90,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       radius: const Radius.circular(10),
                       dashPattern: const [10,4],
                       strokeCap: StrokeCap.round,
-                      color: Pallete.darkModeAppTheme.textTheme.bodyText2!.color!,
+                      color: currentTheme.textTheme.bodyText2!.color!,
                       child: Container(
                       width: double.infinity,
                       height: 150,
