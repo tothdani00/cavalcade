@@ -5,6 +5,7 @@ import 'package:cavalcade/features/auth/community/screens/community_screen.dart'
 import 'package:cavalcade/features/auth/community/screens/edit_community_screen.dart';
 import 'package:cavalcade/features/auth/home/screens/home_screen.dart';
 import 'package:cavalcade/features/auth/screens/login.dart';
+import 'package:cavalcade/features/posts/screens/add_post_type_screen.dart';
 import 'package:cavalcade/features/user_profile/screens/edit_profile_screen.dart';
 import 'package:cavalcade/features/user_profile/screens/user_profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -23,4 +24,5 @@ final loggedInRoute = RouteMap(routes: {
   '/add-admin/:name' : (routeData) => MaterialPage(child: AddAdmin(name: routeData.pathParameters['name']!,)),
   '/user/:uid' : (routeData) => MaterialPage(child: UserProfileScreen(uid: routeData.pathParameters['uid']!,)),
   '/edit-profile/:uid' : (routeData) => MaterialPage(child: EditProfileScreen(uid: routeData.pathParameters['uid']!,)),
+  '/add-post/:type' : (routeData) => MaterialPage(child: AddPostTypeScreen(type: routeData.pathParameters['type']!,)),
 }); 
