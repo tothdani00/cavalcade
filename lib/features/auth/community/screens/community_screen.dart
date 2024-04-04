@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cavalcade/core/common/error_text.dart';
 import 'package:cavalcade/core/common/loader.dart';
+import 'package:cavalcade/core/common/post_card.dart';
 import 'package:cavalcade/features/auth/controller/auth_controller.dart';
 import 'package:cavalcade/features/auth/controller/community_controller.dart';
 import 'package:cavalcade/models/community_model.dart';
@@ -96,9 +97,23 @@ class CommunityScreen extends ConsumerWidget {
           ),
         ];
       }, 
-      body: const Text('Posztok')), 
+      body:  ref.watch(getCommunityPostsProvider(name)).when(data: (data) {
+        return ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (BuildContext context, int index) {
+            final post = data[index];
+            return PostCard(post: post);
+          },
+        );
+        }, error: (error, stackTrace) { 
+          return ErrorText(error: error.toString());
+        }, 
+        loading: () => const Loader(),
+        ),
+      ),
       error: (error, stackTrace) => ErrorText(error: error.toString()), 
-      loading: ()=> const Loader()),
+      loading: ()=> const Loader()
+      ),
     );
   }
 }

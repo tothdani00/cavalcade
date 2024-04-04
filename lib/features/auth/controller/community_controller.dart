@@ -6,6 +6,7 @@ import 'package:cavalcade/core/utils.dart';
 import 'package:cavalcade/features/auth/community/repository/community_repo.dart';
 import 'package:cavalcade/features/auth/controller/auth_controller.dart';
 import 'package:cavalcade/models/community_model.dart';
+import 'package:cavalcade/models/post_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:fpdart/fpdart.dart';
@@ -24,6 +25,10 @@ final getCommunityByNameCommunitiesProvider = StreamProvider.family((ref, String
 
 final searchCommunityProvider = StreamProvider.family((ref, String query) {
   return ref.watch(communityControllerProvider.notifier).searchCommunity(query);
+});
+
+final getCommunityPostsProvider = StreamProvider.family((ref, String name) {
+  return ref.read(communityControllerProvider.notifier).getCommunityPosts(name);
 });
 
 
@@ -140,6 +145,10 @@ class CommunityController extends StateNotifier<bool>{
       (l) => showSnackBar(context, l.message),
       (r) => Routemaster.of(context).pop(),
     );
+  }
+
+  Stream<List<Post>> getCommunityPosts(String name) {
+    return _communityRepository.getCommunityPosts(name);
   }
 
 }

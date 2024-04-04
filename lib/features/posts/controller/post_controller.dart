@@ -20,6 +20,11 @@ final postControllerProvider = StateNotifierProvider<postController, bool>((ref)
   );
 });
 
+final userPostsProvider = StreamProvider.family((ref, List<Community> communities) {
+  final postController = ref.watch(postControllerProvider.notifier);
+  return postController.fetchUserPosts(communities);
+});
+
 class postController extends StateNotifier<bool>{
   final AddPostRepo _postRepo;
   final Ref _ref;
@@ -108,7 +113,7 @@ class postController extends StateNotifier<bool>{
         commentCount: 0, 
         userName: user!.name, 
         uid: user.uid, 
-        type: 'link', 
+        type: 'image', 
         createdAt: DateTime.now(), 
         awards: [],
         link: r,
@@ -122,5 +127,27 @@ class postController extends StateNotifier<bool>{
           Routemaster.of(context).pop();
         });
       });
+    }
+
+    Stream<List<Post>> fetchUserPosts(List<Community> communities){
+      if(communities.isNotEmpty) {
+        return _postRepo.fetchUserPosts(communities);
+      }
+      return Stream.value([]);
+    }
+
+    void deletePost(BuildContext context, Post post) async{
+      final res = await _postRepo.deletePost(post);
+      res.fold((l) => l.message, (r) => showSnackBar(context, 'Sikeres poszt törlés!'));
+    }
+
+    void upvote(Post post) async{
+      final userid = _ref.read(userProvider)!.uid;
+      _postRepo.upvote(post, userid);
+    }
+
+     void downvote(Post post) async{
+      final userid = _ref.read(userProvider)!.uid;
+      _postRepo.downvote(post, userid);
     }
 }

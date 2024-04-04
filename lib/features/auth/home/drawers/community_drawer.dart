@@ -44,7 +44,8 @@ class CommunityDrawer extends ConsumerWidget {
                   );
                 },
               ),
-            ), error: (error, StackTrace) => ErrorText(
+            ), 
+            error: (error, StackTrace) => ErrorText(
             error: error.toString(),
           ), 
           loading: () =>  const Loader(),

@@ -3,6 +3,7 @@ import 'package:cavalcade/core/providers/storage_repo_provider.dart';
 import 'package:cavalcade/core/utils.dart';
 import 'package:cavalcade/features/auth/controller/auth_controller.dart';
 import 'package:cavalcade/features/user_profile/repos/user_profile_repo.dart';
+import 'package:cavalcade/models/post_model.dart';
 import 'package:cavalcade/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,6 +18,10 @@ final userProfileControllerProvider = StateNotifierProvider<UserProfileControlle
     storageRepo: storageRepo,
     ref: ref,
   );
+});
+
+final getUserPostsProvider = StreamProvider.family((ref, String uid) {
+  return ref.read(userProfileControllerProvider.notifier).getUserPosts(uid);
 });
 
 
@@ -69,5 +74,9 @@ class UserProfileController extends StateNotifier<bool>{
         Routemaster.of(context).pop();
         },
       );
+  }
+
+  Stream<List<Post>> getUserPosts(String uid) {
+    return _userProfileRepo.getUserPosts(uid);
   }
 }

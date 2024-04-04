@@ -4,6 +4,7 @@ import 'package:cavalcade/core/failure.dart';
 import 'package:cavalcade/core/providers/firebase_providers.dart';
 import 'package:cavalcade/core/type_defs.dart';
 import 'package:cavalcade/models/community_model.dart';
+import 'package:cavalcade/models/post_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
@@ -110,6 +111,15 @@ class CommunityRepo {
     }
   }
 
+  Stream<List<Post>> getCommunityPosts(String name) {
+    return _posts
+    .where('communityName', isEqualTo: name).orderBy('createdAt', descending: true)
+    .snapshots()
+    .map((event) => event.docs
+    .map((e) => Post.fromMap(e.data() as Map<String, dynamic>),).toList(),);
+  }
+
+  CollectionReference get _posts => _firestore.collection(FirebaseConstants.postsCollection);
   CollectionReference get _communities => _firestore.collection(FirebaseConstants.communitiesCollection);
 }
 
