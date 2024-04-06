@@ -39,7 +39,15 @@ class AuthController extends StateNotifier<bool>{
     state = true;
     final user = await _authRepo.signInWithGoogle();
     state = false;
-    user.fold((l) => showSnackBar(context, l.message), //hibaüzenet
+    user.fold((l) => showSnackBar(context, l.message),
+    (userModel) => _ref.read(userProvider.notifier).update((state) => userModel));
+  }
+
+  void signInAsGuest(BuildContext context) async{
+    state = true;
+    final user = await _authRepo.signInAsGuest();
+    state = false;
+    user.fold((l) => showSnackBar(context, l.message),
     (userModel) => _ref.read(userProvider.notifier).update((state) => userModel));
   }
 

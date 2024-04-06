@@ -41,4 +41,16 @@ class UserProfileRepo {
     .map((event) => event.docs
     .map((e) => Post.fromMap(e.data() as Map<String, dynamic>),).toList(),);
   }
+
+  FutureVoid updateUserPoints(UserModel user) async {
+    try{
+      return right(_users.doc(user.uid).update({
+        'points': user.points,
+      }));
+    } on FirebaseException catch(e) {
+      throw e.message!;
+    } catch(e) {
+      return left(Failure(e.toString()));
+    }
+  }
 }

@@ -6,7 +6,7 @@ class Constants {
   static const logoPath = 'assets/images/logo.png';
   static const loginbackgroundPath = 'assets/images/login_background.png';
   static const googlePath = 'assets/images/google.png';
-  static const profilePicturePath = 'assets/images/default_profile_picture.png';
+  static const profilePicturePath = 'https://www.kindpng.com/picc/m/421-4212275_transparent-default-avatar-png-avatar-img-png-download.png';
   static const communityDefaultBannerPath = 'https://images.pexels.com/photos/346529/pexels-photo-346529.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
   static const communityDefaultPicturePath = 'https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg?w=826&t=st=1712091632~exp=1712092232~hmac=7057c6ae044e51ee69e3287d0e6ae266e1034a0bb8a6a86a92b9d009ed9d2a55';
   static const bannerPath = 'https://images.pexels.com/photos/1955134/pexels-photo-1955134.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
@@ -22,13 +22,14 @@ class Constants {
   static const awardsPath = 'assets/images/awards';
 
   static const awards = {
-    'awesomeAns': '${Constants.awardsPath}/awesomeanswer.png',
-    'gold': '${Constants.awardsPath}/gold.png',
-    'platinum': '${Constants.awardsPath}/platinum.png',
-    'helpful': '${Constants.awardsPath}/helpful.png',
-    'plusone': '${Constants.awardsPath}/plusone.png',
-    'rocket': '${Constants.awardsPath}/rocket.png',
-    'thankyou': '${Constants.awardsPath}/thankyou.png',
-    'til': '${Constants.awardsPath}/til.png',
+    'awesome': '${Constants.awardsPath}/awesome.png',
+    '200_iq': '${Constants.awardsPath}/200_iq.png',
+    'badge': '${Constants.awardsPath}/badge.png',
+    'helpful_tips': '${Constants.awardsPath}/helpful_tips.png',
+    'important': '${Constants.awardsPath}/important.png',
+    'question_mark': '${Constants.awardsPath}/question_mark.png',
+    'thank_you': '${Constants.awardsPath}/thank_you.png',
+    'trophy': '${Constants.awardsPath}/trophy.png',
+    'heart': '${Constants.awardsPath}/heart.png',
   };
 }

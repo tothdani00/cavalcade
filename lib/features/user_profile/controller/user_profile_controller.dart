@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cavalcade/core/enums/enums.dart';
 import 'package:cavalcade/core/providers/storage_repo_provider.dart';
 import 'package:cavalcade/core/utils.dart';
 import 'package:cavalcade/features/auth/controller/auth_controller.dart';
@@ -78,5 +79,15 @@ class UserProfileController extends StateNotifier<bool>{
 
   Stream<List<Post>> getUserPosts(String uid) {
     return _userProfileRepo.getUserPosts(uid);
+  }
+
+  void updateUserPoints(UserPoints points) async{
+    UserModel user = _ref.read(userProvider)!;
+    if (user.points >= 0) {
+    user = user.copyWith(points: user.points + points.points);
+
+    final res = await _userProfileRepo.updateUserPoints(user);
+    res.fold((l) => null, (r) => _ref.read(userProvider.notifier).update((state) => user));
+    }
   }
 }

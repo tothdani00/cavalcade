@@ -8,6 +8,10 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 class Login extends ConsumerWidget {
   const Login({super.key});
 
+  void signInAsGuest(WidgetRef ref, BuildContext context) {
+    ref.read(authControllerProvider.notifier).signInAsGuest(context);
+  }
+
  @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(authControllerProvider);
@@ -24,7 +28,7 @@ class Login extends ConsumerWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () {}, 
+            onPressed: () => signInAsGuest(ref, context), 
             child: const Text(
               'Kihagyás',
               style: TextStyle(fontWeight: FontWeight.bold),

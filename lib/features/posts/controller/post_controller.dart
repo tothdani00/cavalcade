@@ -1,11 +1,16 @@
 import 'dart:io';
+import 'package:cavalcade/core/enums/enums.dart';
 import 'package:cavalcade/core/providers/storage_repo_provider.dart';
 import 'package:cavalcade/core/utils.dart';
 import 'package:cavalcade/features/auth/controller/auth_controller.dart';
 import 'package:cavalcade/features/posts/repo/post_repo.dart';
+import 'package:cavalcade/features/user_profile/controller/user_profile_controller.dart';
+import 'package:cavalcade/models/comment_model.dart';
 import 'package:cavalcade/models/community_model.dart';
 import 'package:cavalcade/models/post_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:uuid/uuid.dart';
@@ -23,6 +28,16 @@ final postControllerProvider = StateNotifierProvider<postController, bool>((ref)
 final userPostsProvider = StreamProvider.family((ref, List<Community> communities) {
   final postController = ref.watch(postControllerProvider.notifier);
   return postController.fetchUserPosts(communities);
+});
+
+final getPostsByIdProvider = StreamProvider.family((ref, String postId) {
+  final postController = ref.watch(postControllerProvider.notifier);
+  return postController.getPostById(postId);
+});
+
+final getPostCommentsProvider = StreamProvider.family((ref, String postId) {
+  final postController = ref.watch(postControllerProvider.notifier);
+  return postController.fetchPostComments(postId);
 });
 
 class postController extends StateNotifier<bool>{
@@ -58,6 +73,7 @@ class postController extends StateNotifier<bool>{
         );
 
         final res = await _postRepo.addPost(post);
+        _ref.read(userProfileControllerProvider.notifier).updateUserPoints(UserPoints.textPost);
         state = false;
         res.fold((l) => showSnackBar(context, l.message), 
         (r) {
@@ -87,6 +103,7 @@ class postController extends StateNotifier<bool>{
         );
 
         final res = await _postRepo.addPost(post);
+        _ref.read(userProfileControllerProvider.notifier).updateUserPoints(UserPoints.linkPost);
         state = false;
         res.fold((l) => showSnackBar(context, l.message), 
         (r) {
@@ -120,6 +137,7 @@ class postController extends StateNotifier<bool>{
         );
 
         final res = await _postRepo.addPost(post);
+        _ref.read(userProfileControllerProvider.notifier).updateUserPoints(UserPoints.imagePost);
         state = false;
         res.fold((l) => showSnackBar(context, l.message), 
         (r) {
@@ -138,6 +156,7 @@ class postController extends StateNotifier<bool>{
 
     void deletePost(BuildContext context, Post post) async{
       final res = await _postRepo.deletePost(post);
+      _ref.read(userProfileControllerProvider.notifier).updateUserPoints(UserPoints.deletePost);
       res.fold((l) => l.message, (r) => showSnackBar(context, 'Sikeres poszt törlés!'));
     }
 
@@ -149,5 +168,47 @@ class postController extends StateNotifier<bool>{
      void downvote(Post post) async{
       final userid = _ref.read(userProvider)!.uid;
       _postRepo.downvote(post, userid);
+    }
+
+    Stream<Post> getPostById(String postId) {
+      return _postRepo.getPostById(postId);
+    }
+
+    void addComment({
+      required BuildContext context, 
+      required String text,
+      required Post post,
+      }) async{
+      final user = _ref.read(userProvider)!;
+      String commentId = const Uuid().v1();
+      Comment comment = Comment(
+        id: commentId, 
+        text: text, 
+        createdAt: DateTime.now(), 
+        postId: post.id, 
+        username: user.name, 
+        profilePic: user.profilePicture,
+      );
+      final res = await _postRepo.addComment(comment);
+      _ref.read(userProfileControllerProvider.notifier).updateUserPoints(UserPoints.comment);
+      res.fold((l) => showSnackBar(context, l.message), (r) => null);
+    }
+
+    
+    Stream<List<Comment>> fetchPostComments(String postId){
+      return _postRepo.getCommentsOfPost(postId);
+    }
+
+    void awardPost({required Post post, required String award, required BuildContext context}) async{
+      final user = _ref.read(userProvider)!;
+      final res = await _postRepo.awardPost(post, award, user.uid);
+      res.fold((l) => showSnackBar(context, l.message), (r) {
+        _ref.read(userProfileControllerProvider.notifier).updateUserPoints(UserPoints.awardPost);
+        _ref.read(userProvider.notifier).update((state) {
+          state?.awards.remove(award);
+          return state;
+        });
+        Routemaster.of(context).pop();
+      });
     }
 }

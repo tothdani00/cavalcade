@@ -57,12 +57,38 @@ class AuthRepo {
           uid: userCredential.user!.uid, 
           isAuthenticated: true, 
           points: 0, 
-          awards: [],
+          awards: ['awesome', 'thank_you', 'helpful_tips', '200_iq', 'badge', 'important', 'question_mark', 'trophy', 'heart'],
         );
         await _users.doc(userCredential.user!.uid).set(userModel.toMap());
       } else {
         userModel = await getUserData(userCredential.user!.uid).first;
       }
+      return right(userModel);
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+
+  FutureEither<UserModel> signInAsGuest() async {
+    try {
+      var userCredential = await _firebaseAuth.signInAnonymously();
+
+      UserModel userModel;
+
+        userModel = UserModel(
+          name: 'Vendég', 
+          email: 'Nincs megadva email', 
+          profilePicture: Constants.profilePicturePath, 
+          banner: Constants.bannerPath,
+          uid: userCredential.user!.uid, 
+          isAuthenticated: false, 
+          points: 0, 
+          awards: [],
+        );
+      await _users.doc(userCredential.user!.uid).set(userModel.toMap());
       return right(userModel);
     } on FirebaseException catch (e) {
       throw e.message!;
