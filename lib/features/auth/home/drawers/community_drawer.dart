@@ -1,5 +1,7 @@
 import 'package:cavalcade/core/common/error_text.dart';
 import 'package:cavalcade/core/common/loader.dart';
+import 'package:cavalcade/core/common/sign_in_button.dart';
+import 'package:cavalcade/features/auth/controller/auth_controller.dart';
 import 'package:cavalcade/features/auth/controller/community_controller.dart';
 import 'package:cavalcade/models/community_model.dart';
 import 'package:flutter/material.dart';
@@ -19,15 +21,20 @@ class CommunityDrawer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(userProvider)!;
+    final isGuest = !user.isAuthenticated;
     return Drawer(
       child: SafeArea(
         child: Column(
           children: [
-            ListTile(
-              title: const Text('Közösség létrehozása'),
-              leading: const Icon(Icons.add),
-              onTap: () => navigateToCreateCommunity(context),
-            ),
+            isGuest
+                ? const SignInButton()
+                : ListTile(
+                    title: const Text('Create a community'),
+                    leading: const Icon(Icons.add),
+                    onTap: () => navigateToCreateCommunity(context),
+                  ),
+            if (!isGuest)
             ref.watch(userCommunitiesProvider).when(data: (communities) => Expanded(
               child: ListView.builder(
                 itemCount: communities.length,
@@ -45,7 +52,7 @@ class CommunityDrawer extends ConsumerWidget {
                 },
               ),
             ), 
-            error: (error, StackTrace) => ErrorText(
+            error: (error, stackTrace) => ErrorText(
             error: error.toString(),
           ), 
           loading: () =>  const Loader(),

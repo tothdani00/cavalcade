@@ -6,6 +6,7 @@ import "package:cavalcade/core/type_defs.dart";
 import "package:cavalcade/models/user_model.dart";
 import "package:cloud_firestore/cloud_firestore.dart";
 import "package:firebase_auth/firebase_auth.dart";
+import "package:flutter/foundation.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:fpdart/fpdart.dart";
 import "package:google_sign_in/google_sign_in.dart";
@@ -36,15 +37,26 @@ class AuthRepo {
 
   Stream<User?> get authStateChange => _firebaseAuth.authStateChanges();
 
-  FutureEither<UserModel> signInWithGoogle() async {
+  FutureEither<UserModel> signInWithGoogle(bool isFromLogin) async {
     try {
-      final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
-      final GoogleSignInAuthentication? googleSignInAuthentication = await googleSignInAccount?.authentication;
-      final AuthCredential credential = GoogleAuthProvider.credential(
-        accessToken: googleSignInAuthentication?.accessToken,
-        idToken: googleSignInAuthentication?.idToken,
+      UserCredential userCredential;
+      if(kIsWeb){
+        GoogleAuthProvider googleAuthProvider = GoogleAuthProvider();
+        googleAuthProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+        userCredential = await _firebaseAuth.signInWithPopup(googleAuthProvider);
+      } else {
+        final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+        final GoogleSignInAuthentication? googleSignInAuthentication = await googleSignInAccount?.authentication;
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          accessToken: googleSignInAuthentication?.accessToken,
+          idToken: googleSignInAuthentication?.idToken,
       );
-      UserCredential userCredential = await _firebaseAuth.signInWithCredential(credential);
+      if(isFromLogin) {
+        userCredential = await _firebaseAuth.signInWithCredential(credential);
+      } else {
+        userCredential = await _firebaseAuth.currentUser!.linkWithCredential(credential);
+        }
+      }
 
       UserModel userModel;
 

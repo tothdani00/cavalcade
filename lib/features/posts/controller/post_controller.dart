@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:cavalcade/core/enums/enums.dart';
 import 'package:cavalcade/core/providers/storage_repo_provider.dart';
 import 'package:cavalcade/core/utils.dart';
@@ -28,6 +29,11 @@ final postControllerProvider = StateNotifierProvider<postController, bool>((ref)
 final userPostsProvider = StreamProvider.family((ref, List<Community> communities) {
   final postController = ref.watch(postControllerProvider.notifier);
   return postController.fetchUserPosts(communities);
+});
+
+final guestPostsProvider = StreamProvider((ref,) {
+  final postController = ref.watch(postControllerProvider.notifier);
+  return postController.fetchGuestPosts();
 });
 
 final getPostsByIdProvider = StreamProvider.family((ref, String postId) {
@@ -113,11 +119,11 @@ class postController extends StateNotifier<bool>{
     }
 
 
-    void shareImagePost({required BuildContext context, required String title, required Community selectedCommunity, required File? file}) async {
+    void shareImagePost({required BuildContext context, required String title, required Community selectedCommunity, required File? file, required Uint8List? webFile}) async {
       state = true;
       String postId = const Uuid().v1();
       final user = _ref.read(userProvider);
-      final imageRes = await _storageRepo.storeFile(path: 'posts/${selectedCommunity.name}', id: postId, file: file);
+      final imageRes = await _storageRepo.storeFile(path: 'posts/${selectedCommunity.name}', id: postId, file: file, webFile: webFile);
 
       imageRes.fold((l) => showSnackBar(context, l.message), (r) async {
         final Post post = Post(
@@ -152,6 +158,10 @@ class postController extends StateNotifier<bool>{
         return _postRepo.fetchUserPosts(communities);
       }
       return Stream.value([]);
+    }
+
+    Stream<List<Post>> fetchGuestPosts(){
+      return _postRepo.fetchGuestPosts();
     }
 
     void deletePost(BuildContext context, Post post) async{

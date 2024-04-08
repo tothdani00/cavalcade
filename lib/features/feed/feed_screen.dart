@@ -1,6 +1,7 @@
 import 'package:cavalcade/core/common/error_text.dart';
 import 'package:cavalcade/core/common/loader.dart';
 import 'package:cavalcade/core/common/post_card.dart';
+import 'package:cavalcade/features/auth/controller/auth_controller.dart';
 import 'package:cavalcade/features/auth/controller/community_controller.dart';
 import 'package:cavalcade/features/posts/controller/post_controller.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,10 @@ class FeedScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(userCommunitiesProvider)
+    final user = ref.watch(userProvider)!;
+    final isGuest = !user.isAuthenticated;
+    if(!isGuest) {
+      return ref.watch(userCommunitiesProvider)
     .when(
       data: (communities) => ref.watch(userPostsProvider(communities))
       .when(data: (data) {
@@ -23,11 +27,32 @@ class FeedScreen extends ConsumerWidget {
           },
         );
       }, 
-      error: (error, StackTrace) => ErrorText(error: error.toString(),
+      error: (error, stackTrace) => ErrorText(error: error.toString(),
       ), 
       loading: () =>  const Loader(),
       ), 
-      error: (error, StackTrace) => ErrorText(error: error.toString(),
+      error: (error, stackTrace) => ErrorText(error: error.toString(),
+      ), 
+      loading: () =>  const Loader(),
+      );
+    }
+    return ref.watch(userCommunitiesProvider)
+    .when(
+      data: (communities) => ref.watch(guestPostsProvider)
+      .when(data: (data) {
+        return ListView.builder(
+          itemCount: data.length,
+          itemBuilder: (BuildContext context, int index) {
+            final post = data[index];
+            return PostCard(post: post);
+          },
+        );
+      }, 
+      error: (error, stackTrace) => ErrorText(error: error.toString(),
+      ), 
+      loading: () =>  const Loader(),
+      ), 
+      error: (error, stackTrace) => ErrorText(error: error.toString(),
       ), 
       loading: () =>  const Loader(),
       );

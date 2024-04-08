@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:cavalcade/core/constants/constants.dart';
 import 'package:cavalcade/core/failure.dart';
 import 'package:cavalcade/core/providers/storage_repo_provider.dart';
@@ -83,13 +84,21 @@ class CommunityController extends StateNotifier<bool>{
     return _communityRepository.getCommunityByName(name);
   }
 
-   void editCommunity({required File? profileFile, required File? bannerFile, required BuildContext context, required Community community}) async {
+   void editCommunity({
+    required File? profileFile, 
+    required File? bannerFile,
+    required Uint8List? profileWebFile, 
+    required Uint8List? bannerWebFile,
+    required BuildContext context, 
+    required Community community
+    }) async {
     state = true;
-    if(profileFile != null){
+    if(profileFile != null || profileWebFile != null){
       final res = await _storageRepo.storeFile(
         path: 'communities/profile', 
         id: community.name, 
         file: profileFile,
+        webFile: profileWebFile,
       );
       res.fold(
       (l) => showSnackBar(context, l.message), 
@@ -97,11 +106,12 @@ class CommunityController extends StateNotifier<bool>{
       );
     }
 
-    if(bannerFile != null){
+    if(bannerFile != null || bannerWebFile != null){
       final res = await _storageRepo.storeFile(
         path: 'communities/banner', 
         id: community.name, 
         file: bannerFile,
+        webFile: bannerWebFile,
       );
       res.fold(
       (l) => showSnackBar(context, l.message), 

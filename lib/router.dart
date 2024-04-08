@@ -5,6 +5,7 @@ import 'package:cavalcade/features/auth/community/screens/community_screen.dart'
 import 'package:cavalcade/features/auth/community/screens/edit_community_screen.dart';
 import 'package:cavalcade/features/auth/home/screens/home_screen.dart';
 import 'package:cavalcade/features/auth/screens/login.dart';
+import 'package:cavalcade/features/posts/screens/add_post_screen.dart';
 import 'package:cavalcade/features/posts/screens/add_post_type_screen.dart';
 import 'package:cavalcade/features/posts/screens/comments_screen.dart';
 import 'package:cavalcade/features/user_profile/screens/edit_profile_screen.dart';
@@ -27,4 +28,5 @@ final loggedInRoute = RouteMap(routes: {
   '/edit-profile/:uid' : (routeData) => MaterialPage(child: EditProfileScreen(uid: routeData.pathParameters['uid']!,)),
   '/add-post/:type' : (routeData) => MaterialPage(child: AddPostTypeScreen(type: routeData.pathParameters['type']!,)),
   '/posts/:postId/comments' : (routeData) => MaterialPage(child: CommentScreen(postId: routeData.pathParameters['postId']!,)),
+  '/add-post': (routeData) => const MaterialPage(child: AddPostScreen(),),
 }); 

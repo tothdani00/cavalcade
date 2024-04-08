@@ -1,5 +1,6 @@
 import 'package:cavalcade/core/common/loader.dart';
 import 'package:cavalcade/features/auth/controller/community_controller.dart';
+import 'package:cavalcade/responsive/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -38,40 +39,42 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
       ),
       body: isLoading
       ? const Loader()
-      : Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            const Align(
-            alignment: Alignment.topLeft, 
-            child: Text('Közösség neve')
-            ),
-            const SizedBox(height: 10),
-            TextField(
-              controller: communityNameController,
-              decoration: const InputDecoration(
-                border: InputBorder.none,
-                hintText: 'Közösség neve',
-                filled: true,
-                contentPadding: EdgeInsets.all(18),
+      : Responsive(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              const Align(
+              alignment: Alignment.topLeft, 
+              child: Text('Közösség neve')
               ),
-              maxLength: 21,
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: createCommunity,
-              style: ElevatedButton.styleFrom(
-                minimumSize: const Size(double.infinity, 50),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
+              const SizedBox(height: 10),
+              TextField(
+                controller: communityNameController,
+                decoration: const InputDecoration(
+                  border: InputBorder.none,
+                  hintText: 'Közösség neve',
+                  filled: true,
+                  contentPadding: EdgeInsets.all(18),
                 ),
+                maxLength: 21,
               ),
-              child: const Text(
-              'Közösség létrehozása',
-               style: TextStyle(fontSize: 15),
-               ),
-            ),
-          ],
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: createCommunity,
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 50),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                child: const Text(
+                'Közösség létrehozása',
+                 style: TextStyle(fontSize: 15),
+                 ),
+              ),
+            ],
+          ),
         ),
       ),
     );

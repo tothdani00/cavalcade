@@ -25,6 +25,7 @@ class CommunityScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider)!;
+    final isGuest = !user.isAuthenticated;
     return Scaffold(
       body: ref.watch(getCommunityByNameCommunitiesProvider(name))
       .when(
@@ -59,6 +60,7 @@ class CommunityScreen extends ConsumerWidget {
                       Text(
                         community.name, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
+                      if(!isGuest)
                       community.admins.contains(user.uid)
                       ? OutlinedButton(
                           onPressed: () { 

@@ -2,6 +2,7 @@ import "package:cavalcade/core/common/loader.dart";
 import "package:cavalcade/core/common/sign_in_button.dart";
 import "package:cavalcade/core/constants/constants.dart";
 import "package:cavalcade/features/auth/controller/auth_controller.dart";
+import "package:cavalcade/responsive/responsive.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
@@ -57,7 +58,7 @@ class Login extends ConsumerWidget {
               ),
             ),
             const SizedBox(height: 30),
-            const SignInButton(),
+            const Responsive(child: SignInButton()),
           ],
         ),
       ),

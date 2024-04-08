@@ -5,8 +5,10 @@ import 'package:cavalcade/features/auth/home/drawers/community_drawer.dart';
 import 'package:cavalcade/features/auth/home/drawers/profile_drawer.dart';
 import 'package:cavalcade/theme/pallete.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routemaster/routemaster.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -35,6 +37,7 @@ class HomeScreen extends ConsumerStatefulWidget {
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider)!;
+    final isGuest = !user.isAuthenticated;
     final currentTheme = ref.watch(themeNotifierProvider);
     return Scaffold(
       appBar: AppBar(
@@ -56,6 +59,13 @@ class HomeScreen extends ConsumerStatefulWidget {
             },
             icon: const Icon(Icons.search),
           ),
+          if(kIsWeb)
+          IconButton(
+            onPressed: () {
+              Routemaster.of(context).push('/add-post');
+            },
+            icon: const Icon(Icons.add),
+          ),
           Builder(
             builder: (context) {
               return IconButton(
@@ -71,8 +81,10 @@ class HomeScreen extends ConsumerStatefulWidget {
       ),
       body: Constants.tabWidgets[_page],
       drawer: const CommunityDrawer(),
-      endDrawer: const ProfileDrawer(),
-      bottomNavigationBar: CupertinoTabBar(
+      endDrawer: isGuest ? null : const ProfileDrawer(),
+      bottomNavigationBar: isGuest || kIsWeb
+      ? null 
+      : CupertinoTabBar(
         activeColor: currentTheme.iconTheme.color,
         backgroundColor: currentTheme.backgroundColor,
         items: const [
