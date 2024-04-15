@@ -3,6 +3,7 @@ import 'package:cavalcade/core/failure.dart';
 import 'package:cavalcade/core/providers/firebase_providers.dart';
 import 'package:cavalcade/core/type_defs.dart';
 import 'package:cavalcade/models/comment_model.dart';
+import 'package:cavalcade/models/comment_reply_model.dart';
 import 'package:cavalcade/models/community_model.dart';
 import 'package:cavalcade/models/post_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -22,6 +23,7 @@ class AddPostRepo {
   CollectionReference get _posts => _firestore.collection(FirebaseConstants.postsCollection);
   CollectionReference get _comments => _firestore.collection(FirebaseConstants.commentsCollection);
   CollectionReference get _users => _firestore.collection(FirebaseConstants.usersCollection);
+  CollectionReference get _replies => _firestore.collection(FirebaseConstants.repliesCollection);
 
   FutureVoid addPost(Post post) async{
     try {
@@ -114,6 +116,19 @@ class AddPostRepo {
     }
   }
 
+  FutureVoid addReply(Reply reply) async {
+  try {
+    await _replies.doc(reply.id).set(reply.toMap());
+    return right(_comments.doc(reply.parentCommentId).update({
+      'commentCount': FieldValue.increment(1),
+    }));
+  } on FirebaseException catch(e) {
+    throw e.message!;
+  } catch (e) {
+    return left(Failure(e.toString()));
+  }
+}
+
   Stream<List<Comment>> getCommentsOfPost(String postId) {
     return _comments
     .where('postId', isEqualTo: postId)
@@ -123,6 +138,16 @@ class AddPostRepo {
     .map((e) => Comment.fromMap(
       e.data() as Map<String, dynamic>)).toList());
   }
+
+  Stream<List<Comment>> getCommentReplies(String commentId) {
+  return _replies
+    .where('parentCommentId', isEqualTo: commentId)
+    .orderBy('createdAt', descending: true)
+    .snapshots()
+    .map((event) => event.docs
+    .map((e) => Comment.fromMap(
+      e.data() as Map<String, dynamic>)).toList());
+}
 
   FutureVoid awardPost(Post post, String award, String senderId) async {
     try {

@@ -7,6 +7,7 @@ import 'package:cavalcade/features/auth/controller/auth_controller.dart';
 import 'package:cavalcade/features/posts/repo/post_repo.dart';
 import 'package:cavalcade/features/user_profile/controller/user_profile_controller.dart';
 import 'package:cavalcade/models/comment_model.dart';
+import 'package:cavalcade/models/comment_reply_model.dart';
 import 'package:cavalcade/models/community_model.dart';
 import 'package:cavalcade/models/post_model.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,6 +46,12 @@ final getPostCommentsProvider = StreamProvider.family((ref, String postId) {
   final postController = ref.watch(postControllerProvider.notifier);
   return postController.fetchPostComments(postId);
 });
+
+final getCommentRepliesProvider = StreamProvider.family((ref, String commentId) {
+  final postController = ref.watch(postControllerProvider.notifier);
+  return postController.fetchCommentReplies(commentId);
+});
+
 
 class postController extends StateNotifier<bool>{
   final AddPostRepo _postRepo;
@@ -204,10 +211,38 @@ class postController extends StateNotifier<bool>{
       res.fold((l) => showSnackBar(context, l.message), (r) => null);
     }
 
+    void addReply({
+      required BuildContext context,
+      required String text,
+      required Post post,
+      required String parentCommentId,
+      }) async {
+      final user = _ref.read(userProvider)!;
+      String replyId = const Uuid().v1();
+      Reply reply = Reply(
+        id: replyId,
+        text: text,
+        createdAt: DateTime.now(),  
+        postId: post.id,
+        username: user.name,
+        profilePic: user.profilePicture,
+        parentCommentId: parentCommentId,
+      );
+      final res = await _postRepo.addReply(reply);
+      _ref.read(userProfileControllerProvider.notifier).updateUserPoints(UserPoints.comment);
+      res.fold((l) => showSnackBar(context, l.message), (r) => null);
+    }   
+
     
     Stream<List<Comment>> fetchPostComments(String postId){
       return _postRepo.getCommentsOfPost(postId);
     }
+
+    Stream<List<Comment>> fetchCommentReplies(String postId){
+      return _postRepo.getCommentReplies(postId);
+    }
+
+
 
     void awardPost({required Post post, required String award, required BuildContext context}) async{
       final user = _ref.read(userProvider)!;

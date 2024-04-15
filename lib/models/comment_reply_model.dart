@@ -1,35 +1,38 @@
-class Comment {
+class Reply {
   final String id;
   final String text;
   final DateTime createdAt;
   final String postId;
   final String username;
   final String profilePic;
-  Comment({
+  final String parentCommentId;
+  Reply({
     required this.id,
     required this.text,
     required this.createdAt,
     required this.postId,
     required this.username,
     required this.profilePic,
+    required this.parentCommentId,
   });
 
-  Comment copyWith({
+  Reply copyWith({
     String? id,
     String? text,
     DateTime? createdAt,
     String? postId,
     String? username,
     String? profilePic,
-    String? parentId,
+    String? parentCommentId,
   }) {
-    return Comment(
+    return Reply(
       id: id ?? this.id,
       text: text ?? this.text,
       createdAt: createdAt ?? this.createdAt,
       postId: postId ?? this.postId,
       username: username ?? this.username,
       profilePic: profilePic ?? this.profilePic,
+      parentCommentId: parentCommentId ?? this.parentCommentId,
     );
   }
 
@@ -41,27 +44,28 @@ class Comment {
       'postId': postId,
       'username': username,
       'profilePic': profilePic,
+      'parentCommentId': parentCommentId,
     };
   }
 
-  factory Comment.fromMap(Map<String, dynamic> map) {
-    return Comment(
+  factory Reply.fromMap(Map<String, dynamic> map) {
+    return Reply(
       id: map['id'] as String,
       text: map['text'] as String,
       createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
       postId: map['postId'] as String,
       username: map['username'] as String,
       profilePic: map['profilePic'] as String,
+      parentCommentId: map['parentCommentId'] as String,
     );
   }
-
   @override
   String toString() {
-    return 'Comment(id: $id, text: $text, createdAt: $createdAt, postId: $postId, username: $username, profilePic: $profilePic';
+    return 'Reply(id: $id, text: $text, createdAt: $createdAt, postId: $postId, username: $username, profilePic: $profilePic, parentCommentId: $parentCommentId)';
   }
 
   @override
-  bool operator ==(covariant Comment other) {
+  bool operator ==(covariant Reply other) {
     if (identical(this, other)) return true;
   
     return 
@@ -70,7 +74,8 @@ class Comment {
       other.createdAt == createdAt &&
       other.postId == postId &&
       other.username == username &&
-      other.profilePic == profilePic;
+      other.profilePic == profilePic &&
+      other.parentCommentId == parentCommentId;
   }
 
   @override
@@ -80,6 +85,7 @@ class Comment {
       createdAt.hashCode ^
       postId.hashCode ^
       username.hashCode ^
-      profilePic.hashCode;
+      profilePic.hashCode ^
+      parentCommentId.hashCode;
   }
 }
