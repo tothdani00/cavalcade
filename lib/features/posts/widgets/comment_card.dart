@@ -1,5 +1,6 @@
 import 'package:cavalcade/core/common/error_text.dart';
 import 'package:cavalcade/core/common/loader.dart';
+import 'package:cavalcade/features/auth/controller/auth_controller.dart';
 import 'package:cavalcade/features/posts/controller/post_controller.dart';
 import 'package:cavalcade/models/comment_model.dart';
 import 'package:cavalcade/responsive/responsive.dart';
@@ -45,6 +46,8 @@ class _CommentCardState extends ConsumerState<CommentCard> {
 
   @override
 Widget build(BuildContext context) {
+  final user = ref.watch(userProvider)!;
+  final isGuest = !user.isAuthenticated;
     return Responsive(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
@@ -87,7 +90,7 @@ Widget build(BuildContext context) {
                 const Text('Válasz'),
               ],
             ),
-             if (showReplyBox)
+             if (showReplyBox && !isGuest)
               Container(
                 margin: const EdgeInsets.only(left: 40),
                 child: Column(
