@@ -16,6 +16,10 @@ class ProfileDrawer extends ConsumerWidget {
     Routemaster.of(context).push('/user/$uid');
   }
 
+  void navigateToMessages(BuildContext context) {
+    Routemaster.of(context).push('/messenger-home');
+  }
+
   void toggleTheme(WidgetRef ref){
     ref.read(themeNotifierProvider.notifier).toggleTheme();
   }
@@ -44,6 +48,11 @@ class ProfileDrawer extends ConsumerWidget {
               title: const Text('Profil szerkesztése'),
               leading: const Icon(Icons.person),
               onTap: () => navigateToUserProfile(context, user.uid),
+            ),
+            ListTile(
+              title: const Text('Üzenetek'),
+              leading: const Icon(Icons.message_outlined, color: Color.fromARGB(255, 55, 124, 141),),
+              onTap: () => navigateToMessages(context),
             ),
             ListTile(
               title: const Text('Kijelentkezés'),

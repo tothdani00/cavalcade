@@ -25,14 +25,20 @@ final getUserDataProvider = StreamProvider.family((ref, String uid) {
   return authController.getUserData(uid);
 });
 
+final allUsersProvider = StreamProvider<List<UserModel>>((ref) {
+  final authController = ref.watch(authControllerProvider.notifier);
+  return authController.getAllUsers();
+});
+
 class AuthController extends StateNotifier<bool>{
   final AuthRepo _authRepo;
   final Ref _ref;
   AuthController({required AuthRepo authRepo, required Ref ref}) 
   : _authRepo = authRepo,
     _ref = ref, 
-    super(false); // oldal toltes
+    super(false);
 
+  User? get currentUser => _authRepo.currentUser;
   Stream<User?> get authStateChange => _authRepo.authStateChange;
 
   void signInWithGoogle(BuildContext context, bool ifFromLogin) async{
@@ -51,9 +57,33 @@ class AuthController extends StateNotifier<bool>{
     (userModel) => _ref.read(userProvider.notifier).update((state) => userModel));
   }
 
+  void signInWithEmailAndPassword(BuildContext context, String email, String password) async {
+    state = true;
+    final user = await _authRepo.signInWithEmailAndPassword(email, password);
+    state = false;
+    user.fold(
+      (l) => showSnackBar(context, l.message),
+      (userModel) => _ref.read(userProvider.notifier).update((state) => userModel),
+    );
+  }
+
+  void registerWithEmailAndPassword(BuildContext context, String email, String password) async {
+    state = true;
+    final user = await _authRepo.registerWithEmailAndPassword(email, password);
+    state = false;
+    user.fold(
+      (l) => showSnackBar(context, l.message),
+      (userModel) => _ref.read(userProvider.notifier).update((state) => userModel),
+    );
+  }
+
   Stream<UserModel> getUserData(String uid) {
     return _authRepo.getUserData(uid);
   }
+
+  Stream<List<UserModel>> getAllUsers() {
+    return _authRepo.getAllUsers();
+}
 
   void logOut() async {
     _authRepo.logOut();

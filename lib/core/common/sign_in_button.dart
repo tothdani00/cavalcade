@@ -25,7 +25,7 @@ class SignInButton extends ConsumerWidget {
           width: 35,
         ),
         label: const Text('Bejelentkezés Google fiókkal', 
-        style: TextStyle(fontSize: 15),
+        style: TextStyle(fontSize: 15, color: Colors.white),
         ),
         style: ElevatedButton.styleFrom(
           backgroundColor: Pallete.greyColor,

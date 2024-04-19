@@ -1,37 +1,40 @@
-import "package:cavalcade/core/common/loader.dart";
-import "package:cavalcade/core/common/loginRegiButton.dart";
-import "package:cavalcade/core/common/sign_in_button.dart";
-import "package:cavalcade/core/common/text_fields.dart";
-import "package:cavalcade/core/constants/constants.dart";
-import "package:cavalcade/features/auth/controller/auth_controller.dart";
-import "package:cavalcade/responsive/responsive.dart";
-import "package:flutter/material.dart";
-import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:routemaster/routemaster.dart";
+import 'package:cavalcade/core/common/loader.dart';
+import 'package:cavalcade/core/common/loginRegiButton.dart';
+import 'package:cavalcade/core/common/text_fields.dart';
+import 'package:cavalcade/core/constants/constants.dart';
+import 'package:cavalcade/features/auth/controller/auth_controller.dart';
+import 'package:cavalcade/responsive/responsive.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:routemaster/routemaster.dart';
 
-class Login extends ConsumerStatefulWidget {
-  const Login({super.key});
+class Register  extends ConsumerStatefulWidget {
+  const Register ({super.key});
 
   @override
-  _LoginState createState() => _LoginState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _Register();
 }
 
-class _LoginState extends ConsumerState<Login> {
-  final emailController = TextEditingController();
-  final pwController = TextEditingController();
+class _Register extends ConsumerState<Register > {
+    final emailController = TextEditingController();
+    final pwController = TextEditingController();
+    final pwAgainController = TextEditingController();
 
-  void signInAsGuest() {
+    void signInAsGuest() {
     ref.read(authControllerProvider.notifier).signInAsGuest(context);
   }
 
-  void signInWithEmailAndPassword() async{
+  void registerWithEmailAndPassword() async{
+    if(pwController.text != pwAgainController.text){
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("A jelszavak nem egyeznek!")));
+      return;
+    }
     try {
-      ref.read(authControllerProvider.notifier).signInWithEmailAndPassword(context, emailController.text, pwController.text);
+      ref.read(authControllerProvider.notifier).registerWithEmailAndPassword(context, emailController.text, pwController.text);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
     }
-     
-  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -91,27 +94,19 @@ class _LoginState extends ConsumerState<Login> {
                         obsText: true,
                       ),
                     ),
-                    const SizedBox(height: 15,),
-                    LoginRegiButton(onTap: signInWithEmailAndPassword, text: "Bejelentkezés"),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("Nincs még fiókja?"),
-                        const SizedBox(width: 4,),
-                        GestureDetector(
-                          onTap: () {
-                            Routemaster.of(context).push('/register');
-                          },
-                          child: const Text(
-                          "Regisztráljon", 
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-
-                        ),
-                      ],
+                    //jelszó megint
+                    const SizedBox(height: 15),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                      child: TextFields(
+                        controller: pwAgainController,
+                        hintText: 'Jelszó megint',
+                        obsText: true,
+                      ),
                     ),
-                    const Responsive(child: SignInButton()),
+                    const SizedBox(height: 15,),
+                    LoginRegiButton(onTap: registerWithEmailAndPassword, text: "Regisztráció"),
+                    const SizedBox(height: 10),
                   ],
                 ),
               ),

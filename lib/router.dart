@@ -5,6 +5,9 @@ import 'package:cavalcade/features/auth/community/screens/community_screen.dart'
 import 'package:cavalcade/features/auth/community/screens/edit_community_screen.dart';
 import 'package:cavalcade/features/auth/home/screens/home_screen.dart';
 import 'package:cavalcade/features/auth/screens/login.dart';
+import 'package:cavalcade/features/auth/screens/register.dart';
+import 'package:cavalcade/features/messenger/screens/messagages_screen.dart';
+import 'package:cavalcade/features/messenger/screens/messenger_home_screen.dart';
 import 'package:cavalcade/features/posts/screens/add_post_screen.dart';
 import 'package:cavalcade/features/posts/screens/add_post_type_screen.dart';
 import 'package:cavalcade/features/posts/screens/comments_screen.dart';
@@ -15,6 +18,7 @@ import 'package:routemaster/routemaster.dart';
 
 final loggedOutRoute = RouteMap(routes: {
   '/': (_) => const MaterialPage<void>(child: Login()),
+  '/register': (_) => const MaterialPage<void>(child: Register()),
 }); 
 
 final loggedInRoute = RouteMap(routes: {
@@ -29,4 +33,5 @@ final loggedInRoute = RouteMap(routes: {
   '/add-post/:type' : (routeData) => MaterialPage(child: AddPostTypeScreen(type: routeData.pathParameters['type']!,)),
   '/posts/:postId/comments' : (routeData) => MaterialPage(child: CommentScreen(postId: routeData.pathParameters['postId']!,)),
   '/add-post': (routeData) => const MaterialPage(child: AddPostScreen(),),
+  '/messenger-home': (routeData) => const MaterialPage(child: MessengerHomeScreen(),),
 }); 
