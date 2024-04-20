@@ -5,16 +5,18 @@ class chatBubble extends StatelessWidget {
   const chatBubble({super.key, required this.message});
 
   @override
-  Widget build(BuildContext context) {
+Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(12),
+      constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.8), // Korlátozza a szélességet a képernyő 80%-ára
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: const Color.fromARGB(255, 34, 69, 97),
       ),
       child: Text(
         message,
-        style: TextStyle(fontSize: 15, color: Colors.white),
+        style: const TextStyle(fontSize: 15, color: Colors.white),
+        softWrap: true, // Engedélyezi a sortörést
       ),
     );
   }

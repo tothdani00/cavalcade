@@ -10,7 +10,6 @@ import 'package:cavalcade/responsive/responsive.dart';
 import 'package:cavalcade/theme/pallete.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
 
@@ -251,30 +250,32 @@ class PostCard extends ConsumerWidget {
                                 IconButton(
                                   onPressed: isGuest ? () {} : () {
                                     showDialog(
-                                    context: context, 
-                                    builder: (context) => Dialog(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(20),
-                                        child: GridView.builder(
+                                      context: context, 
+                                      builder: (context) => Dialog(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(20),
+                                          child: GridView.builder(
                                             shrinkWrap: true,
                                             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 4,
-                                              ),
+                                              crossAxisCount: 4,
+                                            ),
                                             itemCount: user.awards.length,
                                             itemBuilder: (BuildContext context, int index) {
-                                            final award = user.awards[index];
-                                            return GestureDetector(
-                                              onTap: () => awardPost(ref, award, context),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(5.0),
-                                                child: Image.asset(Constants.awards[award]!),
-                                              ),
-                                            );
-                                          },
+                                              final award = user.awards[index];
+                                              return Responsive(
+                                                child: GestureDetector(
+                                                  onTap: () => awardPost(ref, award, context),
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.all(5.0),
+                                                    child: Image.asset(Constants.awards[award]!),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  );
+                                    );
                                   }, 
                                   icon: const Icon(Icons.card_giftcard),
                                   ),

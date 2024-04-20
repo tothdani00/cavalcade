@@ -4,16 +4,15 @@ import 'package:cavalcade/responsive/responsive.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MessengerHomeScreen extends ConsumerStatefulWidget {
+class MessengerHomeScreen extends StatefulWidget {
   const MessengerHomeScreen({super.key});
 
   @override
   _MessengerHomeScreenState createState() => _MessengerHomeScreenState();
 }
 
-class _MessengerHomeScreenState extends ConsumerState<MessengerHomeScreen> {
+class _MessengerHomeScreenState extends State<MessengerHomeScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {

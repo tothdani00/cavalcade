@@ -40,28 +40,58 @@ class _MyAppState extends ConsumerState<MyApp> {
     setState(() {});
   }
 
-  @override
-  Widget build(BuildContext context) {
-        return ref.watch(authStateChangeProvider).when(
-        data: (data) => MaterialApp.router(
-        debugShowCheckedModeBanner: false,
-        title: 'Cavalcade',
-        theme: ref.watch(themeNotifierProvider),
-        routerDelegate: RoutemasterDelegate(
-          routesBuilder: (context) {
-          if(data != null){
-            getData(ref, data);
-            if(userModel != null){
-              return loggedInRoute;
-            }
-          }
-          return loggedOutRoute;
-        },
+@override
+void initState() {
+  super.initState();
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    ref.watch(authStateChangeProvider).when(
+      data: (data) {
+        if (data != null) {
+          getData(ref, data);
+        }
+      },
+      error: (error, stackTrace) => ErrorText(error: error.toString()),
+      loading: () => const Loader(),
+    );
+  });
+}
 
-      ), 
-      routeInformationParser: const RoutemasterParser(),
-      ), 
-    error: (error, stackTrace) => ErrorText(error: error.toString()), loading: () => const Loader()
+@override
+Widget build(BuildContext context) {
+  return FutureBuilder<UserModel?>(
+    future: ref.watch(authStateChangeProvider).when(
+      data: (data) {
+        if (data != null) {
+          return ref.watch(authControllerProvider.notifier).getUserData(data.uid).first;
+        }
+        return Future.value(null);
+      },
+      loading: () => Future.value(null),
+      error: (_, __) => Future.value(null),
+    ),
+    builder: (BuildContext context, AsyncSnapshot<UserModel?> snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Loader();
+      } else if (snapshot.hasError) {
+        return ErrorText(error: snapshot.error.toString());
+      } else {
+        userModel = snapshot.data;
+        return MaterialApp.router(
+          debugShowCheckedModeBanner: false,
+          title: 'Cavalcade',
+          theme: ref.watch(themeNotifierProvider),
+          routerDelegate: RoutemasterDelegate(
+            routesBuilder: (context) {
+              if(userModel != null){
+                return loggedInRoute;
+              }
+              return loggedOutRoute;
+            },
+          ), 
+          routeInformationParser: const RoutemasterParser(),
+          );
+        }
+      },
     );
   }
 }

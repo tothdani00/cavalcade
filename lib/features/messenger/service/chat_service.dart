@@ -1,4 +1,5 @@
 import 'package:cavalcade/models/message_model.dart';
+import 'package:cavalcade/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,32 @@ class ChatService extends ChangeNotifier {
     String chatRoomId = ids.join('_');
     await _firestore.collection('chatRooms').doc(chatRoomId).collection('messages').add(newMessage.toMap());
   }
+
+  Future<UserModel?> getUserData(String userId) async {
+  try {
+    DocumentSnapshot userSnapshot = await _firestore.collection('users').doc(userId).get();
+    if (userSnapshot.exists) {
+      Map<String, dynamic> userData = userSnapshot.data() as Map<String, dynamic>;
+      UserModel user = UserModel(
+        name: userData['name'] ?? '',
+        email: userData['email'] ?? '',
+        profilePicture: userData['profilePicture'] ?? '', // Felhasználó profilképe
+        banner: userData['banner'] ?? '', // Felhasználó banner képe
+        uid: userData['uid'] ?? '', // Felhasználó azonosítója
+        isAuthenticated: userData['isAuthenticated'] ?? false, // Felhasználó hitelesített-e
+        points: userData['points'] ?? 0, // Felhasználó pontszáma
+        awards: List<String>.from(userData['awards'] ?? []), // Felhasználó kitüntetései
+      );
+      return user;
+    } else {
+      return null;
+    }
+  } catch (e) {
+    print('Hiba történt a felhasználó adatok lekérése közben: $e');
+    return null;
+  }
+}
+
 
   Stream<QuerySnapshot> getMessages(String userId, String otherUserId) {
     List<String> ids = [userId, otherUserId];

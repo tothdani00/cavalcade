@@ -10,7 +10,6 @@ import "package:flutter/foundation.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:fpdart/fpdart.dart";
 import "package:google_sign_in/google_sign_in.dart";
-import "package:routemaster/routemaster.dart";
 
 
 final authRepoProvider = Provider((ref) => AuthRepo(
