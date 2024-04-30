@@ -171,11 +171,7 @@ FutureEither<UserModel> registerWithEmailAndPassword(String email, String passwo
 
   Stream<UserModel> getUserData(String uid) {
   return _users.doc(uid).snapshots().map((event) {
-      if (event.exists) {
-      return UserModel.fromMap(event.data() as Map<String, dynamic>);
-      } else {
-        throw Exception('Nem található felhasználó a megadott UID-vel: $uid');
-      }
+     return UserModel.fromMap(event.data() as Map<String, dynamic>);
     });
   }
 

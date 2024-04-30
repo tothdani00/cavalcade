@@ -30,7 +30,7 @@ class CommunityDrawer extends ConsumerWidget {
             isGuest
                 ? const SignInButton()
                 : ListTile(
-                    title: const Text('Create a community'),
+                    title: const Text('Közösség létrehozása'),
                     leading: const Icon(Icons.add),
                     onTap: () => navigateToCreateCommunity(context),
                   ),

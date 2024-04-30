@@ -42,25 +42,30 @@ class _MessengerHomeScreenState extends State<MessengerHomeScreen> {
   }
 
   Widget _buildUserListItem(DocumentSnapshot document) {
-    Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+  Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
 
-   if (_auth.currentUser != null && _auth.currentUser!.email != null && _auth.currentUser!.email != data['email']) {
+  if (data['name'] != "Vendég" && data['email'] != "Nincs megadva email") {
+    if (_auth.currentUser != null &&
+        _auth.currentUser!.email != null &&
+        _auth.currentUser!.email != data['email']) {
       return Responsive(
         child: Padding(
           padding: const EdgeInsets.all(2.0),
           child: ListTile(
             leading: CircleAvatar(
-            backgroundImage: NetworkImage(data['profilePicture']),
+              backgroundImage: NetworkImage(data['profilePicture']),
             ),
             title: Text(data['name']),
             onTap: () {
               Navigator.push(
-              context, 
-              MaterialPageRoute(builder: (context) => MessagesScreen(
-                receiverUserEmail: data['email'],
-                receiverUserUid: data['uid'], 
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MessagesScreen(
+                    receiverUserEmail: data['email'],
+                    receiverUserUid: data['uid'],
+                  ),
                 ),
-              ));
+              );
             },
           ),
         ),
@@ -68,5 +73,8 @@ class _MessengerHomeScreenState extends State<MessengerHomeScreen> {
     } else {
       return Container();
     }
+  } else {
+    return Container();
   }
+}
 }
