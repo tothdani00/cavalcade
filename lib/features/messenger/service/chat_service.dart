@@ -36,12 +36,12 @@ class ChatService extends ChangeNotifier {
       UserModel user = UserModel(
         name: userData['name'] ?? '',
         email: userData['email'] ?? '',
-        profilePicture: userData['profilePicture'] ?? '', // Felhasználó profilképe
-        banner: userData['banner'] ?? '', // Felhasználó banner képe
-        uid: userData['uid'] ?? '', // Felhasználó azonosítója
-        isAuthenticated: userData['isAuthenticated'] ?? false, // Felhasználó hitelesített-e
-        points: userData['points'] ?? 0, // Felhasználó pontszáma
-        awards: List<String>.from(userData['awards'] ?? []), // Felhasználó kitüntetései
+        profilePicture: userData['profilePicture'] ?? '',
+        banner: userData['banner'] ?? '',
+        uid: userData['uid'] ?? '', 
+        isAuthenticated: userData['isAuthenticated'] ?? false,
+        points: userData['points'] ?? 0,
+        awards: List<String>.from(userData['awards'] ?? []),
       );
       return user;
     } else {

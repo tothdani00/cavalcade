@@ -126,7 +126,13 @@ class postController extends StateNotifier<bool>{
     }
 
 
-    void shareImagePost({required BuildContext context, required String title, required Community selectedCommunity, required File? file, required Uint8List? webFile}) async {
+    void shareImagePost({
+      required BuildContext context, 
+      required String title, 
+      required Community selectedCommunity, 
+      required File? file, 
+      required Uint8List? webFile
+      }) async {
       state = true;
       String postId = const Uuid().v1();
       final user = _ref.read(userProvider);
