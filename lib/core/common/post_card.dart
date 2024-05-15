@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:cavalcade/core/common/error_text.dart';
 import 'package:cavalcade/core/common/loader.dart';

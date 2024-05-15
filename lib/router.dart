@@ -6,7 +6,6 @@ import 'package:cavalcade/features/auth/community/screens/edit_community_screen.
 import 'package:cavalcade/features/auth/home/screens/home_screen.dart';
 import 'package:cavalcade/features/auth/screens/login.dart';
 import 'package:cavalcade/features/auth/screens/register.dart';
-import 'package:cavalcade/features/messenger/screens/messagages_screen.dart';
 import 'package:cavalcade/features/messenger/screens/messenger_home_screen.dart';
 import 'package:cavalcade/features/posts/screens/add_post_screen.dart';
 import 'package:cavalcade/features/posts/screens/add_post_type_screen.dart';

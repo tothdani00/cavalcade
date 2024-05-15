@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cavalcade/core/common/error_text.dart';
 import 'package:cavalcade/core/common/loader.dart';
 import 'package:cavalcade/core/utils.dart';
@@ -12,7 +11,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:routemaster/routemaster.dart';
 
 class AddPostTypeScreen extends ConsumerStatefulWidget {
   final String type;

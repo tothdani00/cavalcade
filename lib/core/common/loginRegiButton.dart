@@ -1,6 +1,5 @@
 import 'package:cavalcade/theme/pallete.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class LoginRegiButton extends StatelessWidget {
   final void Function()? onTap;
