@@ -1,6 +1,6 @@
 # Szakdolgozat Cavalcade szociális média alkalmazás 
 
-Beüzemelés
+# Beüzemelés
 
 - Forráskód letöltése
 - Android Emulator használata
