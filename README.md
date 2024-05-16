@@ -1,6 +1,6 @@
 # Szakdolgozat Cavalcade szociális média alkalmazás 
 
-#Tartalom
+# Tartalom
 
 Ez a Github Repository tartalmazza a forráskódot, illetve a futtatható apk fájlt a szakdolgozathoz
 
