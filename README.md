@@ -8,3 +8,7 @@ Ez a Github Repository tartalmazza a forráskódot, illetve a futtatható apk f�
 
 - Android Emulator használata
 - Apk telepítése, futtatása
+
+# Hostolt verzió elérhetősége
+
+- https://cavalcade-2c924.web.app
